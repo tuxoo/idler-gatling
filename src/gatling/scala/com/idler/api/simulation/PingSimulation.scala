@@ -1,6 +1,6 @@
 package com.idler.api.simulation
 
-import com.idler.api.request.user.Ping.ping
+import com.idler.api.request.Ping.ping
 import io.gatling.core.Predef._
 import io.gatling.core.scenario.Simulation
 import io.gatling.core.structure.ScenarioBuilder

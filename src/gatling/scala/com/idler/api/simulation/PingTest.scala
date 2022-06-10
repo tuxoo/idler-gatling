@@ -14,5 +14,5 @@ class PingTest extends Simulation {
   val httpConfig: HttpProtocolBuilder = http.baseUrl("http://localhost:8080")
   val snc: ScenarioBuilder = scenario("Ping").exec(ping)
 
-  setUp(snc.inject(constantUsersPerSec(12) during (5 seconds)).protocols(httpConfig))
+  setUp(snc.inject(constantUsersPerSec(1000) during (5 seconds)).protocols(httpConfig))
 }

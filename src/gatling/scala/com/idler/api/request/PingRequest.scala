@@ -6,6 +6,7 @@ import io.gatling.http.request.builder.HttpRequestBuilder
 
 object PingRequest {
   val ping: HttpRequestBuilder = http("Ping")
-    .get("/ping")
+    .get("/api/v1/ping")
     .check(status.is(200))
+    .check()
 }

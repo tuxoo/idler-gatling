@@ -24,4 +24,9 @@ object Utils {
     }
     session
   }
+
+  private[idler] def returnResponseBodyOnError(request: String): Expression[Session] = session => {
+//    println(s"\u001B[31m[GATLING ERROR] [$request] => ${session("responseBody").as[String]}\u001B[37m")
+    session.markAsFailed
+  }
 }

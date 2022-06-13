@@ -1,7 +1,7 @@
 package com.idler.api.scenario
 
 import com.idler.api.request.user.GetAllUsers.getAllUsers
-import com.idler.api.request.user.GetProfile.getUserProfile
+import com.idler.api.request.user.GetUserProfile.getUserProfile
 import com.idler.api.request.user.GetUserByEmail.getUserByEmail
 import com.idler.api.request.user.SignInUser.signInUser
 import com.idler.config.Config.LOOP

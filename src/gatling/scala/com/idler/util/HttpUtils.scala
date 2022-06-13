@@ -10,13 +10,13 @@ import scala.collection.Seq
 
 object HttpUtils {
 
-  private val httpProtocol: HttpProtocolBuilder = http
+  val httpProtocol: HttpProtocolBuilder = http
     .baseUrl(baseUrl)
     .contentTypeHeader("application/json")
     .disableWarmUp
 
   val injectionSteps: Seq[ClosedInjectionStep] = Seq(
-    rampConcurrentUsers(0) to RPS.toInt during ramp,
+//    rampConcurrentUsers(0) to RPS.toInt during ramp,
     constantConcurrentUsers(RPS.toInt) during scnDuration
   )
 }

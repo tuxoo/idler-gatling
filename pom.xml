@@ -38,6 +38,16 @@
             <artifactId>gatling-charts-highcharts</artifactId>
             <version>${gatling.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.typesafe.slick</groupId>
+            <artifactId>slick_2.13</artifactId>
+            <version>3.3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.4.0</version>
+        </dependency>
     </dependencies>
 
     <build>

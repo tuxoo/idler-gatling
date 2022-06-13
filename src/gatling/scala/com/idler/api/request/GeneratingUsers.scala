@@ -1,19 +1,33 @@
 package com.idler.api.request
 
-import com.idler.config.Config.{dao, genericPasswordHash}
+import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper, SerializationFeature}
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import com.idler.config.Config.{dao, genericPasswordHash, jsonUsersFile}
 import com.idler.util.Utils.{exitFromTest, sessionCounter}
 import com.idler.util.postgres.User
 import io.gatling.core.Predef._
 import io.gatling.core.session._
 import io.gatling.core.structure.ChainBuilder
 
+import java.io.{BufferedWriter, File, FileWriter}
 import java.time.LocalDateTime
+import scala.collection.mutable
 import scala.concurrent.Await
 import scala.concurrent.duration.{Duration, DurationInt}
 import scala.language.postfixOps
 import scala.util.Random
 
 object GeneratingUsers {
+
+  private val random = new Random()
+  val objectMapper = new ObjectMapper()
+  objectMapper.registerModule(DefaultScalaModule)
+  objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+  objectMapper.registerModule(new JavaTimeModule());
+  objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+  private val users = mutable.Set.empty[User]
 
   private[idler] def getUsers: ChainBuilder =
     exec(sessionCounter.collectNewSession)
@@ -29,11 +43,11 @@ object GeneratingUsers {
       pace(1 seconds)
         .exec(pause(1 seconds))
     }
+      .exec(writeUsers)
       .exec(exitFromTest)
 
   private def generator: Expression[Session] = session => {
 
-    val random = new Random()
     val testNumber = System.nanoTime() / random.nextInt(1000000)
 
     val user = User(
@@ -47,7 +61,20 @@ object GeneratingUsers {
 
     def saveUser = dao.saveUser(user)
 
+    users.add(user)
+
     Await.ready(saveUser, Duration.Inf)
+    session
+  }
+
+  private def writeUsers: Expression[Session] = session => {
+    val file = new File(jsonUsersFile)
+    if (file.exists()) file.delete()
+    val usersWriter: BufferedWriter = new BufferedWriter(new FileWriter(jsonUsersFile, true))
+
+    val str = users.map { u => objectMapper.writeValueAsString(u) }.mkString("[", ",\n", "]")
+    usersWriter.append(str)
+    usersWriter.close()
     session
   }
 }

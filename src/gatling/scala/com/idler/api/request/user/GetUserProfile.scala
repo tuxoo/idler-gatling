@@ -1,6 +1,6 @@
 package com.idler.api.request.user
 
-import com.idler.api.request.user.GetAllUsers.getAllUsers
+import com.idler.api.request.user.GetUserByEmail.getUserByEmail
 import com.idler.config.Config.scenarioType
 import com.idler.util.Utils.{returnResponseBodyOnError, sessionCounter}
 import io.gatling.core.Predef._
@@ -25,7 +25,7 @@ object GetUserProfile {
           .exitHere
       } {
         doIf(scenarioType == "chain") {
-          exec(getAllUsers)
+          exec(getUserByEmail)
         }
       }
 }

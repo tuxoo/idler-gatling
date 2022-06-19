@@ -1,7 +1,7 @@
 package com.idler.api.simulation.generation
 
 import com.idler.api.scenario.GeneratingScenario
-import com.idler.util.HttpUtils.injectionSteps
+import com.idler.util.HttpUtils.openInjectionSteps
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.protocol.HttpProtocolBuilder
@@ -15,6 +15,6 @@ class GenerateUsers extends Simulation {
     .disableWarmUp
 
   setUp(
-    scn.GeneratingScn(1).inject(injectionSteps).protocols(protocolBuilder)
+    scn.GeneratingScn(1).inject(openInjectionSteps).protocols(protocolBuilder)
   )
 }

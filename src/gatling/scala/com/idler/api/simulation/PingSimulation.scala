@@ -2,6 +2,7 @@ package com.idler.api.simulation
 
 import com.idler.api.request.Ping.ping
 import com.idler.config.Config.baseUrl
+import com.idler.util.HttpUtils.{httpProtocol, openInjectionSteps}
 import io.gatling.core.Predef._
 import io.gatling.core.scenario.Simulation
 import io.gatling.core.structure.ScenarioBuilder
@@ -12,8 +13,7 @@ import scala.concurrent.duration._
 import scala.language.postfixOps
 
 class PingSimulation extends Simulation {
-  val httpConfig: HttpProtocolBuilder = http.baseUrl(baseUrl)
   val snc: ScenarioBuilder = scenario("Ping").exec(ping)
 
-  setUp(snc.inject(constantUsersPerSec(1000) during (5 seconds)).protocols(httpConfig))
+  setUp(snc.inject(openInjectionSteps).protocols(httpProtocol))
 }

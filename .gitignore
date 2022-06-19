@@ -6,5 +6,6 @@ target/
 *.iws
 *.iml
 *.ipr
+.env
 
 results/

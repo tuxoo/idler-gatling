@@ -1,15 +1,14 @@
 package com.idler.api.request.user
 
 import com.idler.api.request.user.GetAllUsers.getAllUsers
-import com.idler.config.Config.{jsonUsersFile, scenarioType}
+import com.idler.config.Config.scenarioType
+import com.idler.util.HttpUtils.sessionHeaders
 import com.idler.util.Utils.{returnResponseBodyOnError, sessionCounter}
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
 
 object GetUserByEmail {
-  val sessionHeaders: Map[String, String] = Map("Authorization" -> "Bearer ${token}")
-
   private[idler] val getUserByEmail: ChainBuilder =
     doIf(scenarioType == "one_request") {
       exec(sessionCounter.collectNewSession)
@@ -22,7 +21,7 @@ object GetUserByEmail {
       )
       .exec(
         http("GetUserByEmail")
-          .get("/api/v1/user/${email}")
+          .get("/api/v1/user/${login_email}")
           .headers(sessionHeaders)
           .check(status.is(200))
       )

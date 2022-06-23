@@ -14,6 +14,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.outr</groupId>
+            <artifactId>hasher_2.13</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
             <version>${scala.version}</version>

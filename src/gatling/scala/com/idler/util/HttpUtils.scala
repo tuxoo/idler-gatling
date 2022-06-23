@@ -10,6 +10,8 @@ import io.gatling.http.protocol.HttpProtocolBuilder
 import scala.collection.Seq
 
 object HttpUtils {
+    val sessionHeaders: Map[String, String] = Map("Authorization" -> "Bearer ${token}")
+//  val sessionHeaders: Map[String, String] = Map("Authorization" -> "${token}")
 
   val httpProtocol: HttpProtocolBuilder = http
     .baseUrl(baseUrl)
@@ -17,14 +19,18 @@ object HttpUtils {
     .disableWarmUp
 
   val openInjectionSteps: Seq[OpenInjectionStep] = Seq(
-//    nothingFor(10),
-    rampUsersPerSec(0).to(openUsersCount).during(ramp).randomized,
-    constantUsersPerSec(openUsersCount).during(openScnDuration),
-    //    stressPeakUsers(1000).during(20)
+    nothingFor(5),
+    rampUsersPerSec(0).to(openUsersCount).during(openScnDuration).randomized,
+    stressPeakUsers(openUsersCount).during(stressScnDuration),
+    nothingFor(10),
+    rampUsersPerSec(0).to(openUsersCount).during(openScnDuration).randomized,
+    stressPeakUsers(openUsersCount).during(stressScnDuration),
+    nothingFor(5),
+    rampUsersPerSec(0).to(openUsersCount).during(openScnDuration).randomized,
   )
 
   val closedInjectionSteps: Seq[ClosedInjectionStep] = Seq(
-    rampConcurrentUsers(0) to RPS.toInt during ramp,
-    constantConcurrentUsers(RPS.toInt) during openScnDuration
+    rampConcurrentUsers(0) to closedUsersCount during closedScnDuration / 2,
+    constantConcurrentUsers(closedUsersCount) during (closedScnDuration / 2),
   )
 }

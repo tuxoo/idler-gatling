@@ -6,6 +6,7 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.idler.config.Config.{dao, genericPasswordHash, jsonUsersFile}
 import com.idler.util.Utils.{exitFromTest, sessionCounter}
 import com.idler.util.postgres.User
+import com.roundeights.hasher.Implicits._
 import io.gatling.core.Predef._
 import io.gatling.core.session._
 import io.gatling.core.structure.ChainBuilder
@@ -39,13 +40,15 @@ object InsertingUsers {
         exec(writeData)
       }
 
+  private[idler] def generateCode(name: String): String = name.sha1.hex
+
   private[idler] def getUserId(email: String): String = {
     val user = dao.getUserByEmail(email)
 
     user.onComplete {
       case Success(value) => value
     }
-    Await.result(user, 3 seconds).toString
+    Await.result(user, Duration.Inf).toString
   }
 
   private[idler] val writeData: ChainBuilder =

@@ -13,7 +13,7 @@ object SignUpUser {
     feed(jsonFile(jsonUsersFile).circular)
       .exec(
         http("SignUpUser")
-          .post("/api/v1/user/sign-up")
+          .post("/api/v1/user/sign-up/")
           .body(StringBody(
             """{
             "name":"${name}",

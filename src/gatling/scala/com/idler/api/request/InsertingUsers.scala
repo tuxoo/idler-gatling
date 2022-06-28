@@ -3,7 +3,7 @@ package com.idler.api.request
 import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper, SerializationFeature}
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import com.idler.config.Config.{dao, genericPasswordHash, jsonUsersFile}
+import com.idler.config.Config.{dao, jsonUsersFile}
 import com.idler.util.Utils.{exitFromTest, sessionCounter}
 import com.idler.util.postgres.User
 import com.roundeights.hasher.Implicits._
@@ -67,7 +67,7 @@ object InsertingUsers {
       id = UUID.randomUUID(),
       name = String.format(s"User${testNumber}"),
       loginEmail = String.format(s"User${testNumber}@idler.com"),
-      passwordHash = genericPasswordHash,
+      passwordHash = "",
       registeredAt = LocalDateTime.now(),
       visitedAt = LocalDateTime.now(),
       role = "USER",

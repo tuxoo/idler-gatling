@@ -10,7 +10,7 @@ import io.gatling.http.Predef._
 
 object SignUpUser {
   private[idler] val signUpUser: ChainBuilder =
-    feed(jsonFile(jsonUsersFile).circular)
+    feed(jsonFile(jsonUsersFile))
       .exec(
         http("SignUpUser")
           .post("/api/v1/user/sign-up/")

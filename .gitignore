@@ -9,3 +9,4 @@ target/
 .env
 
 results/
+src/gatling/resources/api/
